@@ -75,12 +75,34 @@ class ConfigParser {
    * @private
    */
   _normalizeVersions (versions, defaultVersion) {
-    return _.map(versions, (version, no) => {
-      version = typeof (version) === 'string' ? { location: version, no } : _.assign({}, version, { no })
-      version.default = !!(defaultVersion && version.no === defaultVersion)
+    let masterVersion = null
 
+    const normalizedVersions = _.map(versions, (version, no) => {
+      version = typeof (version) === 'string' ? { location: version, no } : _.assign({}, version, { no })
+
+      /**
+       * Store reference to master version number, since master will
+       * be the default version when no other version is default
+       */
+      if (version.no === 'master') {
+        masterVersion = version
+      }
+
+      version.default = !!(defaultVersion && version.no === defaultVersion)
       return version
     })
+
+    /**
+     * Set max version as default, when there is no default version
+     */
+    if (!defaultVersion) {
+      const maxVersion = masterVersion || _.maxBy(normalizedVersions, (version) => version.no)
+      if (maxVersion) {
+        maxVersion.default = true
+      }
+    }
+
+    return normalizedVersions
   }
 
   /**

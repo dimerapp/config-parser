@@ -112,6 +112,11 @@ class ConfigParser {
    * @return {void}
    */
   _validateVersions (versions, errorsBag) {
+    if (!versions.length) {
+      errorsBag.push('Make sure to define atleast one version')
+      return
+    }
+
     _.each(versions, (version) => {
       if (!version.location) {
         errorsBag.push(`Make sure to define {docs directory} for version ${version.no}`)

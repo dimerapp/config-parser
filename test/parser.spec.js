@@ -30,7 +30,7 @@ test.group('Config Parser', (group) => {
     const configParser = new ConfigParser(configFile)
     const config = await configParser.parse()
     assert.deepEqual(config, {
-      errors: ['{domain} property missing in dimer.json'],
+      errors: ['{domain} property missing in dimer.json', 'Make sure to define atleast one version'],
       config: {
         cname: '',
         domain: '',
@@ -239,5 +239,23 @@ test.group('Config Parser', (group) => {
 
     const config = await fs.readJSON(configFile)
     assert.deepEqual(config, {})
+  })
+
+  test('return error when versions are not defined', async (assert) => {
+    await fs.outputJSON(configFile, {
+      domain: 'adonisjs.com'
+    })
+
+    const configParser = new ConfigParser(configFile)
+    const config = await configParser.parse()
+    assert.deepEqual(config, {
+      errors: ['Make sure to define atleast one version'],
+      config: {
+        cname: '',
+        domain: 'adonisjs.com',
+        versions: [],
+        options: {}
+      }
+    })
   })
 })

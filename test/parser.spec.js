@@ -30,7 +30,7 @@ test.group('Config Parser', (group) => {
     const configParser = new ConfigParser(configFile)
     const config = await configParser.parse()
     assert.deepEqual(config, {
-      errors: ['{domain} property missing in dimer.json'],
+      errors: ['{domain} property missing in dimer.json', 'Make sure to define atleast one version'],
       config: {
         cname: '',
         domain: '',
@@ -58,7 +58,7 @@ test.group('Config Parser', (group) => {
         versions: [
           {
             no: '1.0.0',
-            default: false
+            default: true
           }
         ],
         options: {}
@@ -72,7 +72,7 @@ test.group('Config Parser', (group) => {
       versions: {
         '1.0.0': {
           name: 'Version 1',
-          default: false
+          default: true
         }
       }
     })
@@ -88,7 +88,7 @@ test.group('Config Parser', (group) => {
           {
             no: '1.0.0',
             name: 'Version 1',
-            default: false
+            default: true
           }
         ],
         options: {}
@@ -115,7 +115,7 @@ test.group('Config Parser', (group) => {
           {
             no: '1.0.0',
             location: 'docs/master',
-            default: false
+            default: true
           }
         ],
         options: {}
@@ -239,5 +239,97 @@ test.group('Config Parser', (group) => {
 
     const config = await fs.readJSON(configFile)
     assert.deepEqual(config, {})
+  })
+
+  test('return error when versions are not defined', async (assert) => {
+    await fs.outputJSON(configFile, {
+      domain: 'adonisjs.com'
+    })
+
+    const configParser = new ConfigParser(configFile)
+    const config = await configParser.parse()
+    assert.deepEqual(config, {
+      errors: ['Make sure to define atleast one version'],
+      config: {
+        cname: '',
+        domain: 'adonisjs.com',
+        versions: [],
+        options: {}
+      }
+    })
+  })
+
+  test('set highest version as default when none is defined', async (assert) => {
+    await fs.outputJSON(configFile, {
+      domain: 'adonisjs.com',
+      versions: {
+        '1.0.0': 'docs/1.0.0',
+        '1.0.1': 'docs/1.0.1'
+      }
+    })
+
+    const configParser = new ConfigParser(configFile)
+    const config = await configParser.parse()
+
+    assert.deepEqual(config, {
+      errors: [],
+      config: {
+        cname: '',
+        domain: 'adonisjs.com',
+        versions: [
+          {
+            no: '1.0.0',
+            location: 'docs/1.0.0',
+            default: false
+          },
+          {
+            no: '1.0.1',
+            location: 'docs/1.0.1',
+            default: true
+          }
+        ],
+        options: {}
+      }
+    })
+  })
+
+  test('set master as the default when version when there is no default version', async (assert) => {
+    await fs.outputJSON(configFile, {
+      domain: 'adonisjs.com',
+      versions: {
+        '1.0.0': 'docs/1.0.0',
+        '1.0.1': 'docs/1.0.1',
+        'master': 'docs/master'
+      }
+    })
+
+    const configParser = new ConfigParser(configFile)
+    const config = await configParser.parse()
+
+    assert.deepEqual(config, {
+      errors: [],
+      config: {
+        cname: '',
+        domain: 'adonisjs.com',
+        versions: [
+          {
+            no: '1.0.0',
+            location: 'docs/1.0.0',
+            default: false
+          },
+          {
+            no: '1.0.1',
+            location: 'docs/1.0.1',
+            default: false
+          },
+          {
+            no: 'master',
+            location: 'docs/master',
+            default: true
+          }
+        ],
+        options: {}
+      }
+    })
   })
 })

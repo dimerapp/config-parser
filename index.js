@@ -12,6 +12,7 @@ const fs = require('fs-extra')
 const normalizeUrl = require('normalize-url')
 const url = require('url')
 const _ = require('lodash')
+const utils = require('@dimerapp/utils')
 
 /**
  * Parse dimer.json file and returns a normalized object
@@ -21,8 +22,8 @@ const _ = require('lodash')
  * @param {String} configPath
  */
 class ConfigParser {
-  constructor (configPath) {
-    this.configPath = configPath || join(process.cwd(), 'dimer.json')
+  constructor (basePath) {
+    this.configPath = utils.paths(basePath).configFile()
     this.defaults = {
       domain: '',
       cname: '',

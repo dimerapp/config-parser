@@ -37,10 +37,7 @@ yarn add @dimerapp/config-parser
 ```js
 const ConfigParser = require('@dimerapp/config-parser')
 
-const configParser = new ConfigParser()
-
-// optionally with custom config file
-const config = new ConfigParser(join(__dirname, 'dimer.json'))
+const configParser = new ConfigParser(__dirname)
 ```
 
 ## API

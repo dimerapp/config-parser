@@ -7,7 +7,6 @@
 * file that was distributed with this source code.
 */
 
-const { join } = require('path')
 const fs = require('fs-extra')
 const normalizeUrl = require('normalize-url')
 const url = require('url')
@@ -120,7 +119,7 @@ class ConfigParser {
    */
   _validateDomain (domain, errorsBag) {
     if (!domain) {
-      errorsBag.push('{domain} property missing in dimer.json')
+      errorsBag.push({ key: ['domain'], message: 'Define domain' })
     }
   }
 
@@ -136,13 +135,13 @@ class ConfigParser {
    */
   _validateVersions (versions, errorsBag) {
     if (!versions.length) {
-      errorsBag.push('Make sure to define atleast one version')
+      errorsBag.push({ key: ['versions'], message: 'Define atleast one version' })
       return
     }
 
     _.each(versions, (version) => {
       if (!version.location) {
-        errorsBag.push(`Make sure to define {docs directory} for version ${version.no}`)
+        errorsBag.push({ key: ['versions', version.no], message: 'Define docs directory' })
       }
     })
   }
@@ -185,7 +184,7 @@ class ConfigParser {
       return this._parseConfigContents(config)
     } catch (error) {
       if (error.code === 'ENOENT') {
-        return { errors: ['Cannot find dimer.json file'], config: {} }
+        throw new Error('Cannot find dimer.json file. Run `dimer init` to create one')
       }
 
       throw error

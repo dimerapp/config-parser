@@ -37,8 +37,15 @@ yarn add @dimerapp/config-parser
 ```js
 const ConfigParser = require('@dimerapp/config-parser')
 
-const configParser = new ConfigParser(__dirname)
+// options are optional
+const configParser = new ConfigParser(__dirname, options)
 ```
+
+## Options
+You can optionally pass options to the constructor
+
+#### validateDomain (boolean)
+Whether or not to validate the domain. `default=true`
 
 ## API
 
@@ -46,14 +53,18 @@ const configParser = new ConfigParser(__dirname)
 Parse the config file and returns normalised config object.
 
 ```js
-const { errors, config } = await configParser.parse()
+try {
+  const { errors, config } = await configParser.parse()
+  
+  if (errors) {
+    errors.forEach(console.log)
+    return
+  }
 
-if (errors) {
-  errors.forEach(console.log)
-  return
+  // use config
+} catch (error) {
+  // file is missing or bad JSON
 }
-
-// use config
 ```
 
 #### init

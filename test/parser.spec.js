@@ -19,10 +19,16 @@ test.group('Config Parser', (group) => {
     await fs.remove(basePath)
   })
 
-  test('return null when file is missing', async (assert) => {
+  test('throw exception when file is missing', async (assert) => {
+    assert.plan(1)
+
     const configParser = new ConfigParser(basePath)
-    const config = await configParser.parse()
-    assert.deepEqual(config, { errors: ['Cannot find dimer.json file'], config: {} })
+
+    try {
+      await configParser.parse()
+    } catch ({ message }) {
+      assert.deepEqual(message, 'Cannot find dimer.json file. Run `dimer init` to create one')
+    }
   })
 
   test('return error when domain is missing', async (assert) => {
@@ -30,7 +36,10 @@ test.group('Config Parser', (group) => {
     const configParser = new ConfigParser(basePath)
     const config = await configParser.parse()
     assert.deepEqual(config, {
-      errors: ['{domain} property missing in dimer.json', 'Make sure to define atleast one version'],
+      errors: [
+        { key: ['domain'], message: 'Define domain' },
+        { key: ['versions'], message: 'Define atleast one version' }
+      ],
       config: {
         cname: '',
         domain: '',
@@ -51,7 +60,7 @@ test.group('Config Parser', (group) => {
     const configParser = new ConfigParser(basePath)
     const config = await configParser.parse()
     assert.deepEqual(config, {
-      errors: ['Make sure to define {docs directory} for version 1.0.0'],
+      errors: [{ key: ['versions', '1.0.0'], message: 'Define docs directory' }],
       config: {
         cname: '',
         domain: 'adonisjs.com',
@@ -80,7 +89,7 @@ test.group('Config Parser', (group) => {
     const configParser = new ConfigParser(basePath)
     const config = await configParser.parse()
     assert.deepEqual(config, {
-      errors: ['Make sure to define {docs directory} for version 1.0.0'],
+      errors: [{ key: ['versions', '1.0.0'], message: 'Define docs directory' }],
       config: {
         cname: '',
         domain: 'adonisjs.com',
@@ -249,7 +258,7 @@ test.group('Config Parser', (group) => {
     const configParser = new ConfigParser(basePath)
     const config = await configParser.parse()
     assert.deepEqual(config, {
-      errors: ['Make sure to define atleast one version'],
+      errors: [{ key: ['versions'], message: 'Define atleast one version' }],
       config: {
         cname: '',
         domain: 'adonisjs.com',
@@ -328,6 +337,25 @@ test.group('Config Parser', (group) => {
             default: true
           }
         ],
+        options: {}
+      }
+    })
+  })
+
+  test('do not validate domain when validateDomain set to false', async (assert) => {
+    await fs.outputJSON(join(basePath, 'dimer.json'), {})
+
+    const configParser = new ConfigParser(basePath, { validateDomain: false })
+    const config = await configParser.parse()
+
+    assert.deepEqual(config, {
+      errors: [
+        { key: ['versions'], message: 'Define atleast one version' }
+      ],
+      config: {
+        cname: '',
+        domain: '',
+        versions: [],
         options: {}
       }
     })

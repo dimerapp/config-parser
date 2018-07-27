@@ -1,3 +1,13 @@
+<a name="1.0.3"></a>
+## [1.0.3](https://github.com/dimerapp/config-parser/compare/v1.0.2...v1.0.3) (2018-07-27)
+
+
+### Features
+
+* **parser:** accept options to validate domain or not ([f1c4431](https://github.com/dimerapp/config-parser/commit/f1c4431))
+
+
+
 <a name="1.0.2"></a>
 ## [1.0.2](https://github.com/dimerapp/config-parser/compare/v1.0.1...v1.0.2) (2018-07-26)
 

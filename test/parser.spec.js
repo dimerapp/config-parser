@@ -341,4 +341,23 @@ test.group('Config Parser', (group) => {
       }
     })
   })
+
+  test('do not validate domain when validateDomain set to false', async (assert) => {
+    await fs.outputJSON(join(basePath, 'dimer.json'), {})
+
+    const configParser = new ConfigParser(basePath, { validateDomain: false })
+    const config = await configParser.parse()
+
+    assert.deepEqual(config, {
+      errors: [
+        { key: ['versions'], message: 'Define atleast one version' }
+      ],
+      config: {
+        cname: '',
+        domain: '',
+        versions: [],
+        options: {}
+      }
+    })
+  })
 })

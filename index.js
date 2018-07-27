@@ -21,8 +21,10 @@ const utils = require('@dimerapp/utils')
  * @param {String} configPath
  */
 class ConfigParser {
-  constructor (basePath) {
+  constructor (basePath, options = {}) {
     this.configPath = utils.paths(basePath).configFile()
+    this.options = Object.assign({ validateDomain: true }, options)
+
     this.defaults = {
       domain: '',
       cname: '',
@@ -165,7 +167,10 @@ class ConfigParser {
     const versions = this._normalizeVersions(config.versions || {}, config.defaultVersion)
     const options = config.options || {}
 
-    this._validateDomain(domain, errors)
+    if (this.options.validateDomain) {
+      this._validateDomain(domain, errors)
+    }
+
     this._validateVersions(versions, errors)
 
     return { errors, config: { domain, cname, versions, options } }

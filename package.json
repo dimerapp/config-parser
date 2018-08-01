@@ -40,7 +40,6 @@
     ]
   },
   "dependencies": {
-    "@dimerapp/utils": "^1.0.1",
     "fs-extra": "^7.0.0",
     "lodash": "^4.17.10",
     "normalize-url": "^3.2.0"

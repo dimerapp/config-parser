@@ -11,7 +11,6 @@ const fs = require('fs-extra')
 const normalizeUrl = require('normalize-url')
 const url = require('url')
 const _ = require('lodash')
-const utils = require('@dimerapp/utils')
 
 /**
  * Parse dimer.json file and returns a normalized object
@@ -21,8 +20,8 @@ const utils = require('@dimerapp/utils')
  * @param {String} configPath
  */
 class ConfigParser {
-  constructor (basePath, options = {}) {
-    this.configPath = utils.paths(basePath).configFile()
+  constructor (ctx, options = {}) {
+    this.ctx = ctx
     this.options = Object.assign({ validateDomain: true }, options)
 
     this.defaults = {
@@ -185,7 +184,7 @@ class ConfigParser {
    */
   async parse () {
     try {
-      const config = await fs.readJSON(this.configPath, 'utf-8')
+      const config = await fs.readJSON(this.ctx.paths.configFile(), 'utf-8')
       return this._parseConfigContents(config)
     } catch (error) {
       if (error.code === 'ENOENT') {
@@ -206,13 +205,13 @@ class ConfigParser {
    * @return {Boolean}
    */
   async init (options) {
-    const exists = await fs.exists(this.configPath)
+    const exists = await fs.exists(this.ctx.paths.configFile())
     if (exists) {
       return false
     }
 
     const config = _.merge({}, this.defaults, options)
-    await fs.outputJSON(this.configPath, config)
+    await fs.outputJSON(this.ctx.paths.configFile(), config)
 
     return true
   }

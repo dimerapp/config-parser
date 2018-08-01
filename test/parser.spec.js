@@ -52,7 +52,7 @@ test.group('Config Parser', (group) => {
         cname: '',
         domain: '',
         versions: [],
-        options: {}
+        websiteOptions: {}
       }
     })
   })
@@ -78,7 +78,7 @@ test.group('Config Parser', (group) => {
             default: true
           }
         ],
-        options: {}
+        websiteOptions: {}
       }
     })
   })
@@ -108,7 +108,7 @@ test.group('Config Parser', (group) => {
             default: true
           }
         ],
-        options: {}
+        websiteOptions: {}
       }
     })
   })
@@ -135,7 +135,7 @@ test.group('Config Parser', (group) => {
             default: true
           }
         ],
-        options: {}
+        websiteOptions: {}
       }
     })
   })
@@ -163,7 +163,7 @@ test.group('Config Parser', (group) => {
             default: true
           }
         ],
-        options: {}
+        websiteOptions: {}
       }
     })
   })
@@ -194,7 +194,7 @@ test.group('Config Parser', (group) => {
             default: true
           }
         ],
-        options: {}
+        websiteOptions: {}
       }
     })
   })
@@ -225,7 +225,7 @@ test.group('Config Parser', (group) => {
             default: true
           }
         ],
-        options: {}
+        websiteOptions: {}
       }
     })
   })
@@ -239,7 +239,7 @@ test.group('Config Parser', (group) => {
     assert.deepEqual(config, {
       cname: '',
       domain: '',
-      options: {},
+      websiteOptions: {},
       defaultVersion: 'master',
       versions: {
         master: 'docs/master'
@@ -271,7 +271,7 @@ test.group('Config Parser', (group) => {
         cname: '',
         domain: 'adonisjs.com',
         versions: [],
-        options: {}
+        websiteOptions: {}
       }
     })
   })
@@ -305,7 +305,7 @@ test.group('Config Parser', (group) => {
             default: true
           }
         ],
-        options: {}
+        websiteOptions: {}
       }
     })
   })
@@ -345,7 +345,7 @@ test.group('Config Parser', (group) => {
             default: true
           }
         ],
-        options: {}
+        websiteOptions: {}
       }
     })
   })
@@ -364,7 +364,7 @@ test.group('Config Parser', (group) => {
         cname: '',
         domain: '',
         versions: [],
-        options: {}
+        websiteOptions: {}
       }
     })
   })

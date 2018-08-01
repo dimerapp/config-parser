@@ -31,7 +31,7 @@ class ConfigParser {
       versions: {
         master: 'docs/master'
       },
-      options: {}
+      websiteOptions: {}
     }
   }
 
@@ -164,7 +164,7 @@ class ConfigParser {
     const domain = this._normalizeDomain(config.domain)
     const cname = this._normalizeCname(config.cname)
     const versions = this._normalizeVersions(config.versions || {}, config.defaultVersion)
-    const options = config.options || {}
+    const websiteOptions = config.websiteOptions || {}
 
     if (this.options.validateDomain) {
       this._validateDomain(domain, errors)
@@ -172,7 +172,7 @@ class ConfigParser {
 
     this._validateVersions(versions, errors)
 
-    return { errors, config: { domain, cname, versions, options } }
+    return { errors, config: { domain, cname, versions, websiteOptions } }
   }
 
   /**

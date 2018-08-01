@@ -1,6 +1,6 @@
 {
   "name": "@dimerapp/config-parser",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Parses the dimer.json file",
   "main": "index.js",
   "files": [
@@ -20,6 +20,7 @@
   "license": "MIT",
   "devDependencies": {
     "@adonisjs/mrm-preset": "^1.0.10",
+    "@dimerapp/context": "^1.0.1",
     "commitizen": "^2.10.1",
     "cz-conventional-changelog": "^2.1.0",
     "japa": "^1.0.6",

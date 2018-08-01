@@ -11,16 +11,11 @@ const test = require('japa')
 const ConfigParser = require('..')
 const fs = require('fs-extra')
 const { join } = require('path')
+const Context = require('@dimerapp/context')
 
 const basePath = join(__dirname, 'app')
 
-const ctx = {
-  paths: {
-    configFile () {
-      return join(basePath, 'dimer.json')
-    }
-  }
-}
+const ctx = new Context(basePath)
 
 test.group('Config Parser', (group) => {
   group.afterEach(async () => {
@@ -40,7 +35,8 @@ test.group('Config Parser', (group) => {
   })
 
   test('return error when domain is missing', async (assert) => {
-    await fs.outputJSON(ctx.paths.configFile(), {})
+    await fs.outputJSON(ctx.get('paths').configFile(), {})
+
     const configParser = new ConfigParser(ctx)
     const config = await configParser.parse()
     assert.deepEqual(config, {
@@ -64,7 +60,7 @@ test.group('Config Parser', (group) => {
   })
 
   test('return error when version is set to null', async (assert) => {
-    await fs.outputJSON(ctx.paths.configFile(), {
+    await fs.outputJSON(ctx.get('paths').configFile(), {
       domain: 'adonisjs.com',
       versions: {
         '1.0.0': null
@@ -96,7 +92,7 @@ test.group('Config Parser', (group) => {
   })
 
   test('return error when version is set to object but location is missing', async (assert) => {
-    await fs.outputJSON(ctx.paths.configFile(), {
+    await fs.outputJSON(ctx.get('paths').configFile(), {
       domain: 'adonisjs.com',
       versions: {
         '1.0.0': {
@@ -132,7 +128,7 @@ test.group('Config Parser', (group) => {
   })
 
   test('return normalized versions node, when config file is valid', async (assert) => {
-    await fs.outputJSON(ctx.paths.configFile(), {
+    await fs.outputJSON(ctx.get('paths').configFile(), {
       domain: 'adonisjs.com',
       versions: {
         '1.0.0': 'docs/master'
@@ -165,7 +161,7 @@ test.group('Config Parser', (group) => {
   })
 
   test('set default to true when version matches', async (assert) => {
-    await fs.outputJSON(ctx.paths.configFile(), {
+    await fs.outputJSON(ctx.get('paths').configFile(), {
       domain: 'adonisjs.com',
       defaultVersion: '1.0.0',
       versions: {
@@ -199,7 +195,7 @@ test.group('Config Parser', (group) => {
   })
 
   test('do no override no when defined explicitly', async (assert) => {
-    await fs.outputJSON(ctx.paths.configFile(), {
+    await fs.outputJSON(ctx.get('paths').configFile(), {
       domain: 'adonisjs.com',
       defaultVersion: '1.0.0',
       versions: {
@@ -236,7 +232,7 @@ test.group('Config Parser', (group) => {
   })
 
   test('do no override no when defined explicitly', async (assert) => {
-    await fs.outputJSON(ctx.paths.configFile(), {
+    await fs.outputJSON(ctx.get('paths').configFile(), {
       domain: 'adonisjs.com',
       defaultVersion: '1.0.0',
       versions: {
@@ -277,7 +273,7 @@ test.group('Config Parser', (group) => {
     const created = await configParser.init()
     assert.isTrue(created)
 
-    const config = await fs.readJSON(ctx.paths.configFile())
+    const config = await fs.readJSON(ctx.get('paths').configFile())
     assert.deepEqual(config, {
       cname: '',
       domain: '',
@@ -295,13 +291,13 @@ test.group('Config Parser', (group) => {
   })
 
   test('do not create if file already exists', async (assert) => {
-    await fs.outputJSON(ctx.paths.configFile(), {})
+    await fs.outputJSON(ctx.get('paths').configFile(), {})
 
     const configParser = new ConfigParser(ctx)
     const created = await configParser.init()
     assert.isFalse(created)
 
-    const config = await fs.readJSON(ctx.paths.configFile())
+    const config = await fs.readJSON(ctx.get('paths').configFile())
     assert.deepEqual(config, {})
   })
 
@@ -416,7 +412,7 @@ test.group('Config Parser', (group) => {
   })
 
   test('do not validate domain when validateDomain set to false', async (assert) => {
-    await fs.outputJSON(ctx.paths.configFile(), {})
+    await fs.outputJSON(ctx.get('paths').configFile(), {})
 
     const configParser = new ConfigParser(ctx, { validateDomain: false })
     const config = await configParser.parse()

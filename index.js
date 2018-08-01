@@ -21,7 +21,7 @@ const _ = require('lodash')
  */
 class ConfigParser {
   constructor (ctx, options = {}) {
-    this.ctx = ctx
+    this.paths = ctx.get('paths')
     this.options = Object.assign({ validateDomain: true }, options)
 
     this.defaults = {
@@ -207,7 +207,7 @@ class ConfigParser {
    */
   async parse () {
     try {
-      const config = await fs.readJSON(this.ctx.paths.configFile(), 'utf-8')
+      const config = await fs.readJSON(this.paths.configFile(), 'utf-8')
       return this._parseConfigContents(config)
     } catch (error) {
       if (error.code === 'ENOENT') {
@@ -228,13 +228,13 @@ class ConfigParser {
    * @return {Boolean}
    */
   async init (options) {
-    const exists = await fs.exists(this.ctx.paths.configFile())
+    const exists = await fs.exists(this.paths.configFile())
     if (exists) {
       return false
     }
 
     const config = _.merge({}, this.defaults, options)
-    await fs.outputJSON(this.ctx.paths.configFile(), config)
+    await fs.outputJSON(this.paths.configFile(), config)
 
     return true
   }

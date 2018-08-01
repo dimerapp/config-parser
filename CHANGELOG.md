@@ -1,3 +1,13 @@
+<a name="1.0.7"></a>
+## [1.0.7](https://github.com/dimerapp/config-parser/compare/v1.0.6...v1.0.7) (2018-08-01)
+
+
+### Bug Fixes
+
+* merge config compilerOptions with defaults ([e3c6b8c](https://github.com/dimerapp/config-parser/commit/e3c6b8c))
+
+
+
 <a name="1.0.6"></a>
 ## [1.0.6](https://github.com/dimerapp/config-parser/compare/v1.0.5...v1.0.6) (2018-08-01)
 

@@ -36,9 +36,12 @@ yarn add @dimerapp/config-parser
 
 ```js
 const ConfigParser = require('@dimerapp/config-parser')
+const Context = require('@dimerapp/context')
+
+const ctx = new Context(__dirname)
 
 // options are optional
-const configParser = new ConfigParser(__dirname, options)
+const configParser = new ConfigParser(ctx, options)
 ```
 
 ## Options

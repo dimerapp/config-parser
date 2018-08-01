@@ -1,3 +1,25 @@
+<a name="1.0.5"></a>
+## [1.0.5](https://github.com/dimerapp/config-parser/compare/v1.0.4...v1.0.5) (2018-08-01)
+
+
+### Code Refactoring
+
+* rename options to websiteOptions ([1fa3400](https://github.com/dimerapp/config-parser/commit/1fa3400))
+* use ctx over asking for basePath ([e6f4b90](https://github.com/dimerapp/config-parser/commit/e6f4b90))
+
+
+### Features
+
+* export compiler options ([020be76](https://github.com/dimerapp/config-parser/commit/020be76))
+
+
+### BREAKING CHANGES
+
+* config now returns websiteOptions over just options
+* first argument accepts ctx instance of basePath
+
+
+
 <a name="1.0.4"></a>
 ## [1.0.4](https://github.com/dimerapp/config-parser/compare/v1.0.3...v1.0.4) (2018-07-28)
 

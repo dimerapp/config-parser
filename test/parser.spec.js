@@ -14,6 +14,14 @@ const { join } = require('path')
 
 const basePath = join(__dirname, 'app')
 
+const ctx = {
+  paths: {
+    configFile () {
+      return join(basePath, 'dimer.json')
+    }
+  }
+}
+
 test.group('Config Parser', (group) => {
   group.afterEach(async () => {
     await fs.remove(basePath)
@@ -22,7 +30,7 @@ test.group('Config Parser', (group) => {
   test('throw exception when file is missing', async (assert) => {
     assert.plan(1)
 
-    const configParser = new ConfigParser(basePath)
+    const configParser = new ConfigParser(ctx)
 
     try {
       await configParser.parse()
@@ -32,8 +40,8 @@ test.group('Config Parser', (group) => {
   })
 
   test('return error when domain is missing', async (assert) => {
-    await fs.outputJSON(join(basePath, 'dimer.json'), {})
-    const configParser = new ConfigParser(basePath)
+    await fs.outputJSON(ctx.paths.configFile(), {})
+    const configParser = new ConfigParser(ctx)
     const config = await configParser.parse()
     assert.deepEqual(config, {
       errors: [
@@ -44,20 +52,26 @@ test.group('Config Parser', (group) => {
         cname: '',
         domain: '',
         versions: [],
-        options: {}
+        websiteOptions: {},
+        compilerOptions: {
+          apiUrl: 'http://localhost:5000',
+          createSearchIndex: true,
+          detectAssets: true,
+          assetsUrl: 'http://localhost:5000/__assets'
+        }
       }
     })
   })
 
   test('return error when version is set to null', async (assert) => {
-    await fs.outputJSON(join(basePath, 'dimer.json'), {
+    await fs.outputJSON(ctx.paths.configFile(), {
       domain: 'adonisjs.com',
       versions: {
         '1.0.0': null
       }
     })
 
-    const configParser = new ConfigParser(basePath)
+    const configParser = new ConfigParser(ctx)
     const config = await configParser.parse()
     assert.deepEqual(config, {
       errors: [{ key: ['versions', '1.0.0'], message: 'Define docs directory' }],
@@ -70,13 +84,19 @@ test.group('Config Parser', (group) => {
             default: true
           }
         ],
-        options: {}
+        websiteOptions: {},
+        compilerOptions: {
+          apiUrl: 'http://localhost:5000',
+          createSearchIndex: true,
+          detectAssets: true,
+          assetsUrl: 'http://localhost:5000/__assets'
+        }
       }
     })
   })
 
   test('return error when version is set to object but location is missing', async (assert) => {
-    await fs.outputJSON(join(basePath, 'dimer.json'), {
+    await fs.outputJSON(ctx.paths.configFile(), {
       domain: 'adonisjs.com',
       versions: {
         '1.0.0': {
@@ -86,7 +106,7 @@ test.group('Config Parser', (group) => {
       }
     })
 
-    const configParser = new ConfigParser(basePath)
+    const configParser = new ConfigParser(ctx)
     const config = await configParser.parse()
     assert.deepEqual(config, {
       errors: [{ key: ['versions', '1.0.0'], message: 'Define docs directory' }],
@@ -100,20 +120,26 @@ test.group('Config Parser', (group) => {
             default: true
           }
         ],
-        options: {}
+        websiteOptions: {},
+        compilerOptions: {
+          apiUrl: 'http://localhost:5000',
+          createSearchIndex: true,
+          detectAssets: true,
+          assetsUrl: 'http://localhost:5000/__assets'
+        }
       }
     })
   })
 
   test('return normalized versions node, when config file is valid', async (assert) => {
-    await fs.outputJSON(join(basePath, 'dimer.json'), {
+    await fs.outputJSON(ctx.paths.configFile(), {
       domain: 'adonisjs.com',
       versions: {
         '1.0.0': 'docs/master'
       }
     })
 
-    const configParser = new ConfigParser(basePath)
+    const configParser = new ConfigParser(ctx)
     const config = await configParser.parse()
     assert.deepEqual(config, {
       errors: [],
@@ -127,13 +153,19 @@ test.group('Config Parser', (group) => {
             default: true
           }
         ],
-        options: {}
+        websiteOptions: {},
+        compilerOptions: {
+          apiUrl: 'http://localhost:5000',
+          createSearchIndex: true,
+          detectAssets: true,
+          assetsUrl: 'http://localhost:5000/__assets'
+        }
       }
     })
   })
 
   test('set default to true when version matches', async (assert) => {
-    await fs.outputJSON(join(basePath, 'dimer.json'), {
+    await fs.outputJSON(ctx.paths.configFile(), {
       domain: 'adonisjs.com',
       defaultVersion: '1.0.0',
       versions: {
@@ -141,7 +173,7 @@ test.group('Config Parser', (group) => {
       }
     })
 
-    const configParser = new ConfigParser(basePath)
+    const configParser = new ConfigParser(ctx)
     const config = await configParser.parse()
     assert.deepEqual(config, {
       errors: [],
@@ -155,13 +187,19 @@ test.group('Config Parser', (group) => {
             default: true
           }
         ],
-        options: {}
+        websiteOptions: {},
+        compilerOptions: {
+          apiUrl: 'http://localhost:5000',
+          createSearchIndex: true,
+          detectAssets: true,
+          assetsUrl: 'http://localhost:5000/__assets'
+        }
       }
     })
   })
 
   test('do no override no when defined explicitly', async (assert) => {
-    await fs.outputJSON(join(basePath, 'dimer.json'), {
+    await fs.outputJSON(ctx.paths.configFile(), {
       domain: 'adonisjs.com',
       defaultVersion: '1.0.0',
       versions: {
@@ -172,7 +210,7 @@ test.group('Config Parser', (group) => {
       }
     })
 
-    const configParser = new ConfigParser(basePath)
+    const configParser = new ConfigParser(ctx)
     const config = await configParser.parse()
     assert.deepEqual(config, {
       errors: [],
@@ -186,13 +224,19 @@ test.group('Config Parser', (group) => {
             default: true
           }
         ],
-        options: {}
+        websiteOptions: {},
+        compilerOptions: {
+          apiUrl: 'http://localhost:5000',
+          createSearchIndex: true,
+          detectAssets: true,
+          assetsUrl: 'http://localhost:5000/__assets'
+        }
       }
     })
   })
 
   test('do no override no when defined explicitly', async (assert) => {
-    await fs.outputJSON(join(basePath, 'dimer.json'), {
+    await fs.outputJSON(ctx.paths.configFile(), {
       domain: 'adonisjs.com',
       defaultVersion: '1.0.0',
       versions: {
@@ -203,7 +247,7 @@ test.group('Config Parser', (group) => {
       }
     })
 
-    const configParser = new ConfigParser(basePath)
+    const configParser = new ConfigParser(ctx)
     const config = await configParser.parse()
     assert.deepEqual(config, {
       errors: [],
@@ -217,36 +261,47 @@ test.group('Config Parser', (group) => {
             default: true
           }
         ],
-        options: {}
+        websiteOptions: {},
+        compilerOptions: {
+          apiUrl: 'http://localhost:5000',
+          createSearchIndex: true,
+          detectAssets: true,
+          assetsUrl: 'http://localhost:5000/__assets'
+        }
       }
     })
   })
 
-  test('return file if missing', async (assert) => {
-    const configParser = new ConfigParser(basePath)
+  test('create file if missing', async (assert) => {
+    const configParser = new ConfigParser(ctx)
     const created = await configParser.init()
     assert.isTrue(created)
 
-    const config = await fs.readJSON(join(basePath, 'dimer.json'))
+    const config = await fs.readJSON(ctx.paths.configFile())
     assert.deepEqual(config, {
       cname: '',
       domain: '',
-      options: {},
+      websiteOptions: {},
       defaultVersion: 'master',
       versions: {
         master: 'docs/master'
+      },
+      compilerOptions: {
+        apiUrl: 'http://localhost:5000',
+        detectAssets: true,
+        createSearchIndex: true
       }
     })
   })
 
   test('do not create if file already exists', async (assert) => {
-    await fs.outputJSON(join(basePath, 'dimer.json'), {})
+    await fs.outputJSON(ctx.paths.configFile(), {})
 
-    const configParser = new ConfigParser(basePath)
+    const configParser = new ConfigParser(ctx)
     const created = await configParser.init()
     assert.isFalse(created)
 
-    const config = await fs.readJSON(join(basePath, 'dimer.json'))
+    const config = await fs.readJSON(ctx.paths.configFile())
     assert.deepEqual(config, {})
   })
 
@@ -255,7 +310,7 @@ test.group('Config Parser', (group) => {
       domain: 'adonisjs.com'
     })
 
-    const configParser = new ConfigParser(basePath)
+    const configParser = new ConfigParser(ctx)
     const config = await configParser.parse()
     assert.deepEqual(config, {
       errors: [{ key: ['versions'], message: 'Define atleast one version' }],
@@ -263,7 +318,13 @@ test.group('Config Parser', (group) => {
         cname: '',
         domain: 'adonisjs.com',
         versions: [],
-        options: {}
+        websiteOptions: {},
+        compilerOptions: {
+          apiUrl: 'http://localhost:5000',
+          createSearchIndex: true,
+          detectAssets: true,
+          assetsUrl: 'http://localhost:5000/__assets'
+        }
       }
     })
   })
@@ -277,7 +338,7 @@ test.group('Config Parser', (group) => {
       }
     })
 
-    const configParser = new ConfigParser(basePath)
+    const configParser = new ConfigParser(ctx)
     const config = await configParser.parse()
 
     assert.deepEqual(config, {
@@ -297,7 +358,13 @@ test.group('Config Parser', (group) => {
             default: true
           }
         ],
-        options: {}
+        websiteOptions: {},
+        compilerOptions: {
+          apiUrl: 'http://localhost:5000',
+          createSearchIndex: true,
+          detectAssets: true,
+          assetsUrl: 'http://localhost:5000/__assets'
+        }
       }
     })
   })
@@ -312,7 +379,7 @@ test.group('Config Parser', (group) => {
       }
     })
 
-    const configParser = new ConfigParser(basePath)
+    const configParser = new ConfigParser(ctx)
     const config = await configParser.parse()
 
     assert.deepEqual(config, {
@@ -337,15 +404,21 @@ test.group('Config Parser', (group) => {
             default: true
           }
         ],
-        options: {}
+        websiteOptions: {},
+        compilerOptions: {
+          apiUrl: 'http://localhost:5000',
+          createSearchIndex: true,
+          detectAssets: true,
+          assetsUrl: 'http://localhost:5000/__assets'
+        }
       }
     })
   })
 
   test('do not validate domain when validateDomain set to false', async (assert) => {
-    await fs.outputJSON(join(basePath, 'dimer.json'), {})
+    await fs.outputJSON(ctx.paths.configFile(), {})
 
-    const configParser = new ConfigParser(basePath, { validateDomain: false })
+    const configParser = new ConfigParser(ctx, { validateDomain: false })
     const config = await configParser.parse()
 
     assert.deepEqual(config, {
@@ -356,7 +429,13 @@ test.group('Config Parser', (group) => {
         cname: '',
         domain: '',
         versions: [],
-        options: {}
+        websiteOptions: {},
+        compilerOptions: {
+          apiUrl: 'http://localhost:5000',
+          createSearchIndex: true,
+          detectAssets: true,
+          assetsUrl: 'http://localhost:5000/__assets'
+        }
       }
     })
   })

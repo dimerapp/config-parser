@@ -176,7 +176,7 @@ class ConfigParser {
       apiUrl: 'http://localhost:5000',
       createSearchIndex: true,
       detectAssets: true
-    })
+    }, config.compilerOptions)
 
     /**
      * Create the assets url (if missing)

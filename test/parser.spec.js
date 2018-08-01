@@ -435,4 +435,47 @@ test.group('Config Parser', (group) => {
       }
     })
   })
+
+  test('use compilerOptions defined in config file', async (assert) => {
+    await fs.outputJSON(ctx.get('paths').configFile(), {
+      domain: 'adonisjs.com',
+      defaultVersion: '1.0.0',
+      versions: {
+        '1.0.0': 'docs/master'
+      },
+      compilerOptions: {
+        apiUrl: 'http://foo.com'
+      }
+    })
+
+    const configParser = new ConfigParser(ctx)
+    const { config } = await configParser.parse()
+
+    assert.deepEqual(config.compilerOptions, {
+      apiUrl: 'http://foo.com',
+      createSearchIndex: true,
+      detectAssets: true,
+      assetsUrl: 'http://foo.com/__assets'
+    })
+  })
+
+  test('use websiteOptions defined in config file', async (assert) => {
+    await fs.outputJSON(ctx.get('paths').configFile(), {
+      domain: 'adonisjs.com',
+      defaultVersion: '1.0.0',
+      versions: {
+        '1.0.0': 'docs/master'
+      },
+      websiteOptions: {
+        theme: 'default'
+      }
+    })
+
+    const configParser = new ConfigParser(ctx)
+    const { config } = await configParser.parse()
+
+    assert.deepEqual(config.websiteOptions, {
+      theme: 'default'
+    })
+  })
 })

@@ -31,7 +31,12 @@ class ConfigParser {
       versions: {
         master: 'docs/master'
       },
-      websiteOptions: {}
+      websiteOptions: {},
+      compilerOptions: {
+        apiUrl: 'http://localhost:5000',
+        detectAssets: true,
+        createSearchIndex: true
+      }
     }
   }
 
@@ -164,15 +169,33 @@ class ConfigParser {
     const domain = this._normalizeDomain(config.domain)
     const cname = this._normalizeCname(config.cname)
     const versions = this._normalizeVersions(config.versions || {}, config.defaultVersion)
+
     const websiteOptions = config.websiteOptions || {}
 
+    const compilerOptions = Object.assign({
+      apiUrl: 'http://localhost:5000',
+      createSearchIndex: true,
+      detectAssets: true
+    })
+
+    /**
+     * Create the assets url (if missing)
+     */
+    compilerOptions.assetsUrl = compilerOptions.assetsUrl || `${compilerOptions.apiUrl.replace(/\/$/, '')}/__assets`
+
+    /**
+     * Validate domain (if required)
+     */
     if (this.options.validateDomain) {
       this._validateDomain(domain, errors)
     }
 
+    /**
+     * Validate versions node
+     */
     this._validateVersions(versions, errors)
 
-    return { errors, config: { domain, cname, versions, websiteOptions } }
+    return { errors, config: { domain, cname, versions, websiteOptions, compilerOptions } }
   }
 
   /**

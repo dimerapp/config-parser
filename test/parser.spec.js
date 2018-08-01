@@ -52,7 +52,13 @@ test.group('Config Parser', (group) => {
         cname: '',
         domain: '',
         versions: [],
-        websiteOptions: {}
+        websiteOptions: {},
+        compilerOptions: {
+          apiUrl: 'http://localhost:5000',
+          createSearchIndex: true,
+          detectAssets: true,
+          assetsUrl: 'http://localhost:5000/__assets'
+        }
       }
     })
   })
@@ -78,7 +84,13 @@ test.group('Config Parser', (group) => {
             default: true
           }
         ],
-        websiteOptions: {}
+        websiteOptions: {},
+        compilerOptions: {
+          apiUrl: 'http://localhost:5000',
+          createSearchIndex: true,
+          detectAssets: true,
+          assetsUrl: 'http://localhost:5000/__assets'
+        }
       }
     })
   })
@@ -108,7 +120,13 @@ test.group('Config Parser', (group) => {
             default: true
           }
         ],
-        websiteOptions: {}
+        websiteOptions: {},
+        compilerOptions: {
+          apiUrl: 'http://localhost:5000',
+          createSearchIndex: true,
+          detectAssets: true,
+          assetsUrl: 'http://localhost:5000/__assets'
+        }
       }
     })
   })
@@ -135,7 +153,13 @@ test.group('Config Parser', (group) => {
             default: true
           }
         ],
-        websiteOptions: {}
+        websiteOptions: {},
+        compilerOptions: {
+          apiUrl: 'http://localhost:5000',
+          createSearchIndex: true,
+          detectAssets: true,
+          assetsUrl: 'http://localhost:5000/__assets'
+        }
       }
     })
   })
@@ -163,7 +187,13 @@ test.group('Config Parser', (group) => {
             default: true
           }
         ],
-        websiteOptions: {}
+        websiteOptions: {},
+        compilerOptions: {
+          apiUrl: 'http://localhost:5000',
+          createSearchIndex: true,
+          detectAssets: true,
+          assetsUrl: 'http://localhost:5000/__assets'
+        }
       }
     })
   })
@@ -194,7 +224,13 @@ test.group('Config Parser', (group) => {
             default: true
           }
         ],
-        websiteOptions: {}
+        websiteOptions: {},
+        compilerOptions: {
+          apiUrl: 'http://localhost:5000',
+          createSearchIndex: true,
+          detectAssets: true,
+          assetsUrl: 'http://localhost:5000/__assets'
+        }
       }
     })
   })
@@ -225,12 +261,18 @@ test.group('Config Parser', (group) => {
             default: true
           }
         ],
-        websiteOptions: {}
+        websiteOptions: {},
+        compilerOptions: {
+          apiUrl: 'http://localhost:5000',
+          createSearchIndex: true,
+          detectAssets: true,
+          assetsUrl: 'http://localhost:5000/__assets'
+        }
       }
     })
   })
 
-  test('return file if missing', async (assert) => {
+  test('create file if missing', async (assert) => {
     const configParser = new ConfigParser(ctx)
     const created = await configParser.init()
     assert.isTrue(created)
@@ -243,6 +285,11 @@ test.group('Config Parser', (group) => {
       defaultVersion: 'master',
       versions: {
         master: 'docs/master'
+      },
+      compilerOptions: {
+        apiUrl: 'http://localhost:5000',
+        detectAssets: true,
+        createSearchIndex: true
       }
     })
   })
@@ -271,7 +318,13 @@ test.group('Config Parser', (group) => {
         cname: '',
         domain: 'adonisjs.com',
         versions: [],
-        websiteOptions: {}
+        websiteOptions: {},
+        compilerOptions: {
+          apiUrl: 'http://localhost:5000',
+          createSearchIndex: true,
+          detectAssets: true,
+          assetsUrl: 'http://localhost:5000/__assets'
+        }
       }
     })
   })
@@ -305,7 +358,13 @@ test.group('Config Parser', (group) => {
             default: true
           }
         ],
-        websiteOptions: {}
+        websiteOptions: {},
+        compilerOptions: {
+          apiUrl: 'http://localhost:5000',
+          createSearchIndex: true,
+          detectAssets: true,
+          assetsUrl: 'http://localhost:5000/__assets'
+        }
       }
     })
   })
@@ -345,7 +404,13 @@ test.group('Config Parser', (group) => {
             default: true
           }
         ],
-        websiteOptions: {}
+        websiteOptions: {},
+        compilerOptions: {
+          apiUrl: 'http://localhost:5000',
+          createSearchIndex: true,
+          detectAssets: true,
+          assetsUrl: 'http://localhost:5000/__assets'
+        }
       }
     })
   })
@@ -364,7 +429,13 @@ test.group('Config Parser', (group) => {
         cname: '',
         domain: '',
         versions: [],
-        websiteOptions: {}
+        websiteOptions: {},
+        compilerOptions: {
+          apiUrl: 'http://localhost:5000',
+          createSearchIndex: true,
+          detectAssets: true,
+          assetsUrl: 'http://localhost:5000/__assets'
+        }
       }
     })
   })

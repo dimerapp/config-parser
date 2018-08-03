@@ -478,4 +478,13 @@ test.group('Config Parser', (group) => {
       theme: 'default'
     })
   })
+
+  test('define custom apiUrl', async (assert) => {
+    await fs.outputJSON(ctx.get('paths').configFile(), {})
+
+    const configParser = new ConfigParser(ctx, { apiUrl: 'http://api.dimerapp.com' })
+    const { config } = await configParser.parse()
+
+    assert.equal(config.compilerOptions.apiUrl, 'http://api.dimerapp.com')
+  })
 })

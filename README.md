@@ -50,6 +50,9 @@ You can optionally pass options to the constructor
 #### validateDomain (boolean)
 Whether or not to validate the domain. `default=true`
 
+#### apiUrl (string)
+API url from which the api is served. `default=http://localhost:5000`
+
 ## API
 
 #### parse

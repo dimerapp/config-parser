@@ -22,7 +22,10 @@ const _ = require('lodash')
 class ConfigParser {
   constructor (ctx, options = {}) {
     this.paths = ctx.get('paths')
-    this.options = Object.assign({ validateDomain: true }, options)
+    this.options = Object.assign({
+      validateDomain: true,
+      apiUrl: 'http://localhost:5000'
+    }, options)
 
     this.defaults = {
       domain: '',
@@ -33,7 +36,7 @@ class ConfigParser {
       },
       websiteOptions: {},
       compilerOptions: {
-        apiUrl: 'http://localhost:5000',
+        apiUrl: this.options.apiUrl,
         detectAssets: true,
         createSearchIndex: true
       }
@@ -173,7 +176,7 @@ class ConfigParser {
     const websiteOptions = config.websiteOptions || {}
 
     const compilerOptions = Object.assign({
-      apiUrl: 'http://localhost:5000',
+      apiUrl: this.options.apiUrl,
       createSearchIndex: true,
       detectAssets: true
     }, config.compilerOptions)

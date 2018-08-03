@@ -1,3 +1,13 @@
+<a name="1.0.8"></a>
+## [1.0.8](https://github.com/dimerapp/config-parser/compare/v1.0.7...v1.0.8) (2018-08-03)
+
+
+### Features
+
+* accept apiUrl as an option ([017066c](https://github.com/dimerapp/config-parser/commit/017066c))
+
+
+
 <a name="1.0.7"></a>
 ## [1.0.7](https://github.com/dimerapp/config-parser/compare/v1.0.6...v1.0.7) (2018-08-01)
 

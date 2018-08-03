@@ -503,4 +503,13 @@ test.group('Config Parser', (group) => {
 
     assert.equal(config.compilerOptions.apiUrl, 'http://api.dimerapp.com')
   })
+
+  test('create docs/master if missing', async (assert) => {
+    const configParser = new ConfigParser(ctx)
+    const created = await configParser.init()
+    assert.isTrue(created)
+
+    const masterDir = await fs.exists(ctx.get('paths').versionDocsPath('docs/master'))
+    assert.isTrue(masterDir)
+  })
 })

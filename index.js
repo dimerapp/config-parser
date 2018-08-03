@@ -247,6 +247,11 @@ class ConfigParser {
     const config = _.merge({}, this.defaults, options)
     await fs.outputJSON(this.paths.configFile(), config, { spaces: 2 })
 
+    /**
+     * Create empty directory when missing.
+     */
+    await fs.ensureDir(this.paths.versionDocsPath(config.versions.master))
+
     return true
   }
 }

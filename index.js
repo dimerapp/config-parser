@@ -245,7 +245,7 @@ class ConfigParser {
     }
 
     const config = _.merge({}, this.defaults, options)
-    await fs.outputJSON(this.paths.configFile(), config)
+    await fs.outputJSON(this.paths.configFile(), config, { spaces: 2 })
 
     return true
   }

@@ -1,3 +1,19 @@
+<a name="1.0.9"></a>
+## [1.0.9](https://github.com/dimerapp/config-parser/compare/v1.0.8...v1.0.9) (2018-08-03)
+
+
+### Bug Fixes
+
+* give preference to apiUrl from options ([146977f](https://github.com/dimerapp/config-parser/commit/146977f))
+* indent default config file created via init method ([f39fe35](https://github.com/dimerapp/config-parser/commit/f39fe35))
+
+
+### Features
+
+* create master version directory if missing ([1a974b3](https://github.com/dimerapp/config-parser/commit/1a974b3))
+
+
+
 <a name="1.0.8"></a>
 ## [1.0.8](https://github.com/dimerapp/config-parser/compare/v1.0.7...v1.0.8) (2018-08-03)
 

@@ -22,10 +22,8 @@ const _ = require('lodash')
 class ConfigParser {
   constructor (ctx, options = {}) {
     this.paths = ctx.get('paths')
-    this.options = Object.assign({
-      validateDomain: true,
-      apiUrl: 'http://localhost:5000'
-    }, options)
+
+    this.options = Object.assign({ validateDomain: true }, options)
 
     this.defaults = {
       domain: '',
@@ -176,10 +174,20 @@ class ConfigParser {
     const websiteOptions = config.websiteOptions || {}
 
     const compilerOptions = Object.assign({
-      apiUrl: this.options.apiUrl,
+      apiUrl: 'http://localhost:5000',
       createSearchIndex: true,
       detectAssets: true
     }, config.compilerOptions)
+
+    /**
+     * We give preference to `apiUrl` from the options.
+     * This way, we allow modifying the apiUrl on fly
+     * without changing the config file again and
+     * again.
+     */
+    if (this.options.apiUrl) {
+      compilerOptions.apiUrl = this.options.apiUrl
+    }
 
     /**
      * Create the assets url (if missing)

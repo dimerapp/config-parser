@@ -283,7 +283,6 @@ test.group('Config Parser', (group) => {
         master: 'docs/master'
       },
       compilerOptions: {
-        apiUrl: 'http://localhost:5000',
         detectAssets: true,
         createSearchIndex: true
       }
@@ -479,8 +478,25 @@ test.group('Config Parser', (group) => {
     })
   })
 
+  test('given preference to config apiUrl', async (assert) => {
+    await fs.outputJSON(ctx.get('paths').configFile(), {
+      compilerOptions: {
+        apiUrl: 'http://localhost:3000'
+      }
+    })
+
+    const configParser = new ConfigParser(ctx, {})
+    const { config } = await configParser.parse()
+
+    assert.equal(config.compilerOptions.apiUrl, 'http://localhost:3000')
+  })
+
   test('define custom apiUrl', async (assert) => {
-    await fs.outputJSON(ctx.get('paths').configFile(), {})
+    await fs.outputJSON(ctx.get('paths').configFile(), {
+      compilerOptions: {
+        apiUrl: 'http://localhost:3000'
+      }
+    })
 
     const configParser = new ConfigParser(ctx, { apiUrl: 'http://api.dimerapp.com' })
     const { config } = await configParser.parse()

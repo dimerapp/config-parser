@@ -1,3 +1,20 @@
+<a name="2.0.0"></a>
+# [2.0.0](https://github.com/dimerapp/config-parser/compare/v1.0.9...v2.0.0) (2018-08-27)
+
+
+### Features
+
+* **zones:** add support for zones ([e573101](https://github.com/dimerapp/config-parser/commit/e573101))
+
+
+### BREAKING CHANGES
+
+* **zones:** `versions` have been removed from top level keys and is nested inside the `zones`
+property. Existing config files will parse fine, however the parsed value will not have versions and
+instead have zones
+
+
+
 <a name="1.0.9"></a>
 ## [1.0.9](https://github.com/dimerapp/config-parser/compare/v1.0.8...v1.0.9) (2018-08-03)
 

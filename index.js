@@ -70,6 +70,27 @@ class ConfigParser {
   }
 
   /**
+   * Normalizes zones
+   *
+   * @method _normalizeZones
+   *
+   * @param  {Object}        zones
+   *
+   * @return {Array}
+   *
+   * @private
+   */
+  _normalizeZones (zones) {
+    return _.map(zones, (zone, slug) => {
+      const versions = typeof (zone) === 'string'
+        ? this._normalizeVersions({ master: slug })
+        : this._normalizeVersions(zone.versions, zone.defaultVersion)
+
+      return { versions, name: zone.name || slug, slug }
+    })
+  }
+
+  /**
    * Normalizes versions
    *
    * @method _normalizeVersions
@@ -136,21 +157,66 @@ class ConfigParser {
    * @method _validateVersions
    *
    * @param  {String}          versions
+   * @param  {String}          forZone
    * @param  {Array}           errorsBag
    *
    * @return {void}
    */
-  _validateVersions (versions, errorsBag) {
-    if (!versions.length) {
-      errorsBag.push({ key: ['versions'], message: 'Define atleast one version' })
+  _validateVersions (versions, forZone, errorsBag) {
+    if (!versions || !versions.length) {
+      const key = forZone !== 'default' ? ['zones', forZone, 'versions'] : ['versions']
+      errorsBag.push({ key, message: 'Define atleast one version' })
       return
     }
 
     _.each(versions, (version) => {
       if (!version.location) {
-        errorsBag.push({ key: ['versions', version.no], message: 'Define docs directory' })
+        const key = forZone !== 'default' ? ['zones', forZone, 'versions', version.no] : ['versions', version.no]
+        errorsBag.push({ key: key, message: 'Define docs directory' })
       }
     })
+  }
+
+  /**
+   * Validates the zones to make sure they are ready to be
+   * consumed by other parts of the app
+   *
+   * @method _validateZones
+   *
+   * @param  {Array}       zones
+   * @param  {Array}       errorsBag
+   *
+   * @return {void}
+   *
+   * @private
+   */
+  _validateZones (zones, errorsBag) {
+    if (!zones.length) {
+      errorsBag.push({ key: ['zones'], message: 'Define versions for the zone' })
+    }
+
+    zones.forEach((zone) => {
+      this._validateVersions(zone.versions, zone.slug, errorsBag)
+    })
+  }
+
+  /**
+   * Validates the top level keys to make sure they are not conflicting
+   * with each other.
+   *
+   * @method _validateTopLevelKeys
+   *
+   * @param  {Object}              config
+   * @param  {Array}              errorsBag
+   *
+   * @return {void}
+   *
+   * @private
+   */
+  _validateTopLevelKeys (config, errorsBag) {
+    if (config.zones && (config.versions || config.defaultVersion)) {
+      errorsBag.push({ key: ['zones'], message: 'When using zones, make sure to nest versions inside them' })
+    }
   }
 
   /**
@@ -167,9 +233,30 @@ class ConfigParser {
   _parseConfigContents (config = {}) {
     const errors = []
 
+    /**
+     * If top level keys are not valid, then return as it is
+     */
+    this._validateTopLevelKeys(config, errors)
+    if (errors.length) {
+      return { errors, config }
+    }
+
+    /**
+     * If there are no zones defined (which is optional), we should
+     * create a zone and nest the versions inside it.
+     */
+    if (config.zones === undefined) {
+      config.zones = {
+        default: {
+          defaultVersion: config.defaultVersion || '',
+          versions: config.versions || {}
+        }
+      }
+    }
+
     const domain = this._normalizeDomain(config.domain)
     const cname = this._normalizeCname(config.cname)
-    const versions = this._normalizeVersions(config.versions || {}, config.defaultVersion)
+    const zones = this._normalizeZones(config.zones || {})
 
     const websiteOptions = config.websiteOptions || {}
 
@@ -202,11 +289,11 @@ class ConfigParser {
     }
 
     /**
-     * Validate versions node
+     * Validate zones node
      */
-    this._validateVersions(versions, errors)
+    this._validateZones(zones, errors)
 
-    return { errors, config: { domain, cname, versions, websiteOptions, compilerOptions } }
+    return { errors, config: { domain, cname, zones, websiteOptions, compilerOptions } }
   }
 
   /**

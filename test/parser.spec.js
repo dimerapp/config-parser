@@ -47,7 +47,11 @@ test.group('Config Parser', (group) => {
       config: {
         cname: '',
         domain: '',
-        versions: [],
+        zones: [{
+          name: 'default',
+          versions: [],
+          slug: 'default'
+        }],
         websiteOptions: {},
         compilerOptions: {
           apiUrl: 'http://localhost:5000',
@@ -69,17 +73,22 @@ test.group('Config Parser', (group) => {
 
     const configParser = new ConfigParser(ctx)
     const config = await configParser.parse()
+
     assert.deepEqual(config, {
       errors: [{ key: ['versions', '1.0.0'], message: 'Define docs directory' }],
       config: {
         cname: '',
         domain: 'adonisjs.com',
-        versions: [
-          {
-            no: '1.0.0',
-            default: true
-          }
-        ],
+        zones: [{
+          name: 'default',
+          slug: 'default',
+          versions: [
+            {
+              no: '1.0.0',
+              default: true
+            }
+          ]
+        }],
         websiteOptions: {},
         compilerOptions: {
           apiUrl: 'http://localhost:5000',
@@ -109,13 +118,17 @@ test.group('Config Parser', (group) => {
       config: {
         cname: '',
         domain: 'adonisjs.com',
-        versions: [
-          {
-            no: '1.0.0',
-            name: 'Version 1',
-            default: true
-          }
-        ],
+        zones: [{
+          name: 'default',
+          slug: 'default',
+          versions: [
+            {
+              no: '1.0.0',
+              name: 'Version 1',
+              default: true
+            }
+          ]
+        }],
         websiteOptions: {},
         compilerOptions: {
           apiUrl: 'http://localhost:5000',
@@ -142,13 +155,17 @@ test.group('Config Parser', (group) => {
       config: {
         cname: '',
         domain: 'adonisjs.com',
-        versions: [
-          {
-            no: '1.0.0',
-            location: 'docs/master',
-            default: true
-          }
-        ],
+        zones: [{
+          name: 'default',
+          slug: 'default',
+          versions: [
+            {
+              no: '1.0.0',
+              location: 'docs/master',
+              default: true
+            }
+          ]
+        }],
         websiteOptions: {},
         compilerOptions: {
           apiUrl: 'http://localhost:5000',
@@ -176,13 +193,17 @@ test.group('Config Parser', (group) => {
       config: {
         cname: '',
         domain: 'adonisjs.com',
-        versions: [
-          {
-            no: '1.0.0',
-            location: 'docs/master',
-            default: true
-          }
-        ],
+        zones: [{
+          name: 'default',
+          slug: 'default',
+          versions: [
+            {
+              no: '1.0.0',
+              location: 'docs/master',
+              default: true
+            }
+          ]
+        }],
         websiteOptions: {},
         compilerOptions: {
           apiUrl: 'http://localhost:5000',
@@ -194,7 +215,7 @@ test.group('Config Parser', (group) => {
     })
   })
 
-  test('do no override no when defined explicitly', async (assert) => {
+  test('do not override `no` when defined explicitly', async (assert) => {
     await fs.outputJSON(ctx.get('paths').configFile(), {
       domain: 'adonisjs.com',
       defaultVersion: '1.0.0',
@@ -213,50 +234,17 @@ test.group('Config Parser', (group) => {
       config: {
         cname: '',
         domain: 'adonisjs.com',
-        versions: [
-          {
-            no: '1.0.0',
-            location: 'docs/master',
-            default: true
-          }
-        ],
-        websiteOptions: {},
-        compilerOptions: {
-          apiUrl: 'http://localhost:5000',
-          createSearchIndex: true,
-          detectAssets: true,
-          assetsUrl: 'http://localhost:5000/__assets'
-        }
-      }
-    })
-  })
-
-  test('do no override no when defined explicitly', async (assert) => {
-    await fs.outputJSON(ctx.get('paths').configFile(), {
-      domain: 'adonisjs.com',
-      defaultVersion: '1.0.0',
-      versions: {
-        '1.0.0': {
-          location: 'docs/master',
-          no: 'foo'
-        }
-      }
-    })
-
-    const configParser = new ConfigParser(ctx)
-    const config = await configParser.parse()
-    assert.deepEqual(config, {
-      errors: [],
-      config: {
-        cname: '',
-        domain: 'adonisjs.com',
-        versions: [
-          {
-            no: '1.0.0',
-            location: 'docs/master',
-            default: true
-          }
-        ],
+        zones: [{
+          name: 'default',
+          slug: 'default',
+          versions: [
+            {
+              no: '1.0.0',
+              location: 'docs/master',
+              default: true
+            }
+          ]
+        }],
         websiteOptions: {},
         compilerOptions: {
           apiUrl: 'http://localhost:5000',
@@ -312,7 +300,11 @@ test.group('Config Parser', (group) => {
       config: {
         cname: '',
         domain: 'adonisjs.com',
-        versions: [],
+        zones: [{
+          name: 'default',
+          slug: 'default',
+          versions: []
+        }],
         websiteOptions: {},
         compilerOptions: {
           apiUrl: 'http://localhost:5000',
@@ -341,18 +333,22 @@ test.group('Config Parser', (group) => {
       config: {
         cname: '',
         domain: 'adonisjs.com',
-        versions: [
-          {
-            no: '1.0.0',
-            location: 'docs/1.0.0',
-            default: false
-          },
-          {
-            no: '1.0.1',
-            location: 'docs/1.0.1',
-            default: true
-          }
-        ],
+        zones: [{
+          name: 'default',
+          slug: 'default',
+          versions: [
+            {
+              no: '1.0.0',
+              location: 'docs/1.0.0',
+              default: false
+            },
+            {
+              no: '1.0.1',
+              location: 'docs/1.0.1',
+              default: true
+            }
+          ]
+        }],
         websiteOptions: {},
         compilerOptions: {
           apiUrl: 'http://localhost:5000',
@@ -382,23 +378,27 @@ test.group('Config Parser', (group) => {
       config: {
         cname: '',
         domain: 'adonisjs.com',
-        versions: [
-          {
-            no: '1.0.0',
-            location: 'docs/1.0.0',
-            default: false
-          },
-          {
-            no: '1.0.1',
-            location: 'docs/1.0.1',
-            default: false
-          },
-          {
-            no: 'master',
-            location: 'docs/master',
-            default: true
-          }
-        ],
+        zones: [{
+          name: 'default',
+          slug: 'default',
+          versions: [
+            {
+              no: '1.0.0',
+              location: 'docs/1.0.0',
+              default: false
+            },
+            {
+              no: '1.0.1',
+              location: 'docs/1.0.1',
+              default: false
+            },
+            {
+              no: 'master',
+              location: 'docs/master',
+              default: true
+            }
+          ]
+        }],
         websiteOptions: {},
         compilerOptions: {
           apiUrl: 'http://localhost:5000',
@@ -423,7 +423,11 @@ test.group('Config Parser', (group) => {
       config: {
         cname: '',
         domain: '',
-        versions: [],
+        zones: [{
+          name: 'default',
+          slug: 'default',
+          versions: []
+        }],
         websiteOptions: {},
         compilerOptions: {
           apiUrl: 'http://localhost:5000',
@@ -511,5 +515,190 @@ test.group('Config Parser', (group) => {
 
     const masterDir = await fs.exists(ctx.get('paths').versionDocsPath('docs/master'))
     assert.isTrue(masterDir)
+  })
+
+  test('allow zones to be defined as string', async (assert) => {
+    await fs.outputJSON(ctx.get('paths').configFile(), {
+      zones: {
+        faq: 'faq'
+      }
+    })
+
+    const configParser = new ConfigParser(ctx, {})
+    const { config } = await configParser.parse()
+
+    assert.deepEqual(config.zones, [
+      {
+        slug: 'faq',
+        name: 'faq',
+        versions: [
+          {
+            no: 'master',
+            location: 'faq',
+            default: true
+          }
+        ]
+      }
+    ])
+  })
+
+  test('allow zones to be defined as object', async (assert) => {
+    await fs.outputJSON(ctx.get('paths').configFile(), {
+      domain: 'foo',
+      zones: {
+        faq: {
+          slug: 'faq',
+          versions: {
+            master: 'faqs/master'
+          }
+        }
+      }
+    })
+
+    const configParser = new ConfigParser(ctx, {})
+    const { config, errors } = await configParser.parse()
+
+    assert.deepEqual(errors, [])
+    assert.deepEqual(config.zones, [
+      {
+        slug: 'faq',
+        name: 'faq',
+        versions: [{
+          no: 'master',
+          location: 'faqs/master',
+          default: true
+        }]
+      }
+    ])
+  })
+
+  test('allow zones to define name', async (assert) => {
+    await fs.outputJSON(ctx.get('paths').configFile(), {
+      domain: 'foo',
+      zones: {
+        faq: {
+          slug: 'faq',
+          name: 'FAQ\'s',
+          versions: {
+            master: 'faqs/master'
+          }
+        }
+      }
+    })
+
+    const configParser = new ConfigParser(ctx, {})
+    const { config, errors } = await configParser.parse()
+
+    assert.deepEqual(errors, [])
+    assert.deepEqual(config.zones, [
+      {
+        slug: 'faq',
+        name: 'FAQ\'s',
+        versions: [{
+          no: 'master',
+          location: 'faqs/master',
+          default: true
+        }]
+      }
+    ])
+  })
+
+  test('raise error when version is missing in zones object', async (assert) => {
+    await fs.outputJSON(ctx.get('paths').configFile(), {
+      domain: 'foo',
+      zones: {
+        faq: {
+          slug: 'faq'
+        }
+      }
+    })
+
+    const configParser = new ConfigParser(ctx, {})
+    const { config, errors } = await configParser.parse()
+
+    assert.deepEqual(errors, [{
+      key: ['zones', 'faq', 'versions'],
+      message: 'Define atleast one version'
+    }])
+
+    assert.deepEqual(config.zones, [
+      {
+        slug: 'faq',
+        name: 'faq',
+        versions: []
+      }
+    ])
+  })
+
+  test('raise error when zones is set to null', async (assert) => {
+    await fs.outputJSON(ctx.get('paths').configFile(), {
+      domain: 'foo',
+      zones: null
+    })
+
+    const configParser = new ConfigParser(ctx, {})
+    const { config, errors } = await configParser.parse()
+
+    assert.deepEqual(errors, [{
+      key: ['zones'],
+      message: 'Define versions for the zone'
+    }])
+
+    assert.deepEqual(config.zones, [])
+  })
+
+  test('raise error when zones is set to empty object', async (assert) => {
+    await fs.outputJSON(ctx.get('paths').configFile(), {
+      domain: 'foo',
+      zones: {}
+    })
+
+    const configParser = new ConfigParser(ctx, {})
+    const { config, errors } = await configParser.parse()
+
+    assert.deepEqual(errors, [{
+      key: ['zones'],
+      message: 'Define versions for the zone'
+    }])
+
+    assert.deepEqual(config.zones, [])
+  })
+
+  test('raise error when zones and versions are defined together', async (assert) => {
+    await fs.outputJSON(ctx.get('paths').configFile(), {
+      domain: 'foo',
+      zones: {
+        faq: 'faq'
+      },
+      versions: {
+        docs: 'master'
+      }
+    })
+
+    const configParser = new ConfigParser(ctx, {})
+    const { errors } = await configParser.parse()
+
+    assert.deepEqual(errors, [{
+      key: ['zones'],
+      message: 'When using zones, make sure to nest versions inside them'
+    }])
+  })
+
+  test('raise error when zones and defaultVersion is defined together', async (assert) => {
+    await fs.outputJSON(ctx.get('paths').configFile(), {
+      domain: 'foo',
+      zones: {
+        faq: 'faq'
+      },
+      defaultVersion: 'master'
+    })
+
+    const configParser = new ConfigParser(ctx, {})
+    const { errors } = await configParser.parse()
+
+    assert.deepEqual(errors, [{
+      key: ['zones'],
+      message: 'When using zones, make sure to nest versions inside them'
+    }])
   })
 })

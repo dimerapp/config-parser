@@ -41,8 +41,8 @@ test.group('Config Parser', (group) => {
     const config = await configParser.parse()
     assert.deepEqual(config, {
       errors: [
-        { key: ['domain'], message: 'Define domain' },
-        { key: ['versions'], message: 'Define atleast one version' }
+        { message: 'Missing domain in config', ruleId: 'missing-domain' },
+        { message: 'Missing version(s) in config', ruleId: 'no-versions' }
       ],
       config: {
         cname: '',
@@ -75,7 +75,7 @@ test.group('Config Parser', (group) => {
     const config = await configParser.parse()
 
     assert.deepEqual(config, {
-      errors: [{ key: ['versions', '1.0.0'], message: 'Define docs directory' }],
+      errors: [{ message: 'Missing docs directory for 1.0.0 version', ruleId: 'missing-docs-directory' }],
       config: {
         cname: '',
         domain: 'adonisjs.com',
@@ -114,7 +114,7 @@ test.group('Config Parser', (group) => {
     const configParser = new ConfigParser(ctx)
     const config = await configParser.parse()
     assert.deepEqual(config, {
-      errors: [{ key: ['versions', '1.0.0'], message: 'Define docs directory' }],
+      errors: [{ message: 'Missing docs directory for 1.0.0 version', ruleId: 'missing-docs-directory' }],
       config: {
         cname: '',
         domain: 'adonisjs.com',
@@ -296,7 +296,7 @@ test.group('Config Parser', (group) => {
     const configParser = new ConfigParser(ctx)
     const config = await configParser.parse()
     assert.deepEqual(config, {
-      errors: [{ key: ['versions'], message: 'Define atleast one version' }],
+      errors: [{ message: 'Missing version(s) in config', ruleId: 'no-versions' }],
       config: {
         cname: '',
         domain: 'adonisjs.com',
@@ -418,7 +418,7 @@ test.group('Config Parser', (group) => {
 
     assert.deepEqual(config, {
       errors: [
-        { key: ['versions'], message: 'Define atleast one version' }
+        { message: 'Missing version(s) in config', ruleId: 'no-versions' }
       ],
       config: {
         cname: '',
@@ -617,8 +617,8 @@ test.group('Config Parser', (group) => {
     const { config, errors } = await configParser.parse()
 
     assert.deepEqual(errors, [{
-      key: ['zones', 'faq', 'versions'],
-      message: 'Define atleast one version'
+      message: 'Missing version(s) for faq zone in config',
+      ruleId: 'no-versions'
     }])
 
     assert.deepEqual(config.zones, [
@@ -640,8 +640,8 @@ test.group('Config Parser', (group) => {
     const { config, errors } = await configParser.parse()
 
     assert.deepEqual(errors, [{
-      key: ['zones'],
-      message: 'Define versions for the zone'
+      message: 'Missing zones and versions',
+      ruleId: 'no-zones'
     }])
 
     assert.deepEqual(config.zones, [])
@@ -657,8 +657,8 @@ test.group('Config Parser', (group) => {
     const { config, errors } = await configParser.parse()
 
     assert.deepEqual(errors, [{
-      key: ['zones'],
-      message: 'Define versions for the zone'
+      message: 'Missing zones and versions',
+      ruleId: 'no-zones'
     }])
 
     assert.deepEqual(config.zones, [])
@@ -679,8 +679,8 @@ test.group('Config Parser', (group) => {
     const { errors } = await configParser.parse()
 
     assert.deepEqual(errors, [{
-      key: ['zones'],
-      message: 'When using zones, make sure to nest versions inside them'
+      message: 'Versions and zones conflict',
+      ruleId: 'keys-conflicts'
     }])
   })
 
@@ -697,8 +697,8 @@ test.group('Config Parser', (group) => {
     const { errors } = await configParser.parse()
 
     assert.deepEqual(errors, [{
-      key: ['zones'],
-      message: 'When using zones, make sure to nest versions inside them'
+      ruleId: 'keys-conflicts',
+      message: 'Versions and zones conflict'
     }])
   })
 })

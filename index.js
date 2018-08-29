@@ -147,7 +147,7 @@ class ConfigParser {
    */
   _validateDomain (domain, errorsBag) {
     if (!domain) {
-      errorsBag.push({ key: ['domain'], message: 'Define domain' })
+      errorsBag.push({ message: 'Missing domain in config', ruleId: 'missing-domain' })
     }
   }
 
@@ -164,15 +164,20 @@ class ConfigParser {
    */
   _validateVersions (versions, forZone, errorsBag) {
     if (!versions || !versions.length) {
-      const key = forZone !== 'default' ? ['zones', forZone, 'versions'] : ['versions']
-      errorsBag.push({ key, message: 'Define atleast one version' })
+      const message = forZone !== 'default'
+        ? `Missing version(s) for ${forZone} zone in config`
+        : 'Missing version(s) in config'
+
+      errorsBag.push({ message, ruleId: 'no-versions' })
       return
     }
 
     _.each(versions, (version) => {
       if (!version.location) {
-        const key = forZone !== 'default' ? ['zones', forZone, 'versions', version.no] : ['versions', version.no]
-        errorsBag.push({ key: key, message: 'Define docs directory' })
+        errorsBag.push({
+          message: `Missing docs directory for ${version.no} version`,
+          ruleId: 'missing-docs-directory'
+        })
       }
     })
   }
@@ -192,7 +197,7 @@ class ConfigParser {
    */
   _validateZones (zones, errorsBag) {
     if (!zones.length) {
-      errorsBag.push({ key: ['zones'], message: 'Define versions for the zone' })
+      errorsBag.push({ message: 'Missing zones and versions', ruleId: 'no-zones' })
     }
 
     zones.forEach((zone) => {
@@ -215,7 +220,7 @@ class ConfigParser {
    */
   _validateTopLevelKeys (config, errorsBag) {
     if (config.zones && (config.versions || config.defaultVersion)) {
-      errorsBag.push({ key: ['zones'], message: 'When using zones, make sure to nest versions inside them' })
+      errorsBag.push({ message: 'Versions and zones conflict', ruleId: 'keys-conflicts' })
     }
   }
 

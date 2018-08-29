@@ -63,7 +63,7 @@ try {
   const { errors, config } = await configParser.parse()
   
   if (errors) {
-    errors.forEach(console.log)
+    errors.forEach(({ message, ruleId }) => console.log(message, ruleId))
     return
   }
 

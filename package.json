@@ -1,6 +1,6 @@
 {
   "name": "@dimerapp/config-parser",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Parses the dimer.json file",
   "main": "index.js",
   "files": [

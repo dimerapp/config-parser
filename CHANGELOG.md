@@ -1,3 +1,13 @@
+<a name="2.0.2"></a>
+## [2.0.2](https://github.com/dimerapp/config-parser/compare/v2.0.1...v2.0.2) (2018-09-03)
+
+
+### Bug Fixes
+
+* use zone object value when value is defined as string ([abc199e](https://github.com/dimerapp/config-parser/commit/abc199e))
+
+
+
 <a name="2.0.1"></a>
 ## [2.0.1](https://github.com/dimerapp/config-parser/compare/v2.0.0...v2.0.1) (2018-08-29)
 

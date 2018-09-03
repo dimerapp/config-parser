@@ -520,7 +520,7 @@ test.group('Config Parser', (group) => {
   test('allow zones to be defined as string', async (assert) => {
     await fs.outputJSON(ctx.get('paths').configFile(), {
       zones: {
-        faq: 'faq'
+        faq: 'docs/faq'
       }
     })
 
@@ -534,7 +534,7 @@ test.group('Config Parser', (group) => {
         versions: [
           {
             no: 'master',
-            location: 'faq',
+            location: 'docs/faq',
             default: true
           }
         ]
@@ -700,5 +700,16 @@ test.group('Config Parser', (group) => {
       ruleId: 'keys-conflicts',
       message: 'Versions and zones conflict'
     }])
+  })
+
+  test('raise error when zones object is empty', async (assert) => {
+    await fs.outputJSON(ctx.get('paths').configFile(), {
+      domain: 'foo',
+      zones: {}
+    })
+
+    const configParser = new ConfigParser(ctx, {})
+    const { errors } = await configParser.parse()
+    assert.deepEqual(errors, [{ message: 'Missing zones and versions', ruleId: 'no-zones' }])
   })
 })

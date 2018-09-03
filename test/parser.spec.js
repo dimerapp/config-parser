@@ -701,4 +701,15 @@ test.group('Config Parser', (group) => {
       message: 'Versions and zones conflict'
     }])
   })
+
+  test('raise error when zones object is empty', async (assert) => {
+    await fs.outputJSON(ctx.get('paths').configFile(), {
+      domain: 'foo',
+      zones: {}
+    })
+
+    const configParser = new ConfigParser(ctx, {})
+    const { errors } = await configParser.parse()
+    assert.deepEqual(errors, [{ message: 'Missing zones and versions', ruleId: 'no-zones' }])
+  })
 })

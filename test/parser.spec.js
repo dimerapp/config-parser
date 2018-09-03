@@ -520,7 +520,7 @@ test.group('Config Parser', (group) => {
   test('allow zones to be defined as string', async (assert) => {
     await fs.outputJSON(ctx.get('paths').configFile(), {
       zones: {
-        faq: 'faq'
+        faq: 'docs/faq'
       }
     })
 
@@ -534,7 +534,7 @@ test.group('Config Parser', (group) => {
         versions: [
           {
             no: 'master',
-            location: 'faq',
+            location: 'docs/faq',
             default: true
           }
         ]

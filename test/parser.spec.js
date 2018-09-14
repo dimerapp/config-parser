@@ -57,7 +57,8 @@ test.group('Config Parser', (group) => {
           apiUrl: 'http://localhost:5000',
           createSearchIndex: true,
           detectAssets: true,
-          assetsUrl: 'http://localhost:5000/__assets'
+          assetsUrl: 'http://localhost:5000/__assets',
+          validateDomain: true
         }
       }
     })
@@ -94,7 +95,8 @@ test.group('Config Parser', (group) => {
           apiUrl: 'http://localhost:5000',
           createSearchIndex: true,
           detectAssets: true,
-          assetsUrl: 'http://localhost:5000/__assets'
+          assetsUrl: 'http://localhost:5000/__assets',
+          validateDomain: true
         }
       }
     })
@@ -134,7 +136,8 @@ test.group('Config Parser', (group) => {
           apiUrl: 'http://localhost:5000',
           createSearchIndex: true,
           detectAssets: true,
-          assetsUrl: 'http://localhost:5000/__assets'
+          assetsUrl: 'http://localhost:5000/__assets',
+          validateDomain: true
         }
       }
     })
@@ -171,7 +174,8 @@ test.group('Config Parser', (group) => {
           apiUrl: 'http://localhost:5000',
           createSearchIndex: true,
           detectAssets: true,
-          assetsUrl: 'http://localhost:5000/__assets'
+          assetsUrl: 'http://localhost:5000/__assets',
+          validateDomain: true
         }
       }
     })
@@ -209,7 +213,8 @@ test.group('Config Parser', (group) => {
           apiUrl: 'http://localhost:5000',
           createSearchIndex: true,
           detectAssets: true,
-          assetsUrl: 'http://localhost:5000/__assets'
+          assetsUrl: 'http://localhost:5000/__assets',
+          validateDomain: true
         }
       }
     })
@@ -250,7 +255,8 @@ test.group('Config Parser', (group) => {
           apiUrl: 'http://localhost:5000',
           createSearchIndex: true,
           detectAssets: true,
-          assetsUrl: 'http://localhost:5000/__assets'
+          assetsUrl: 'http://localhost:5000/__assets',
+          validateDomain: true
         }
       }
     })
@@ -272,7 +278,8 @@ test.group('Config Parser', (group) => {
       },
       compilerOptions: {
         detectAssets: true,
-        createSearchIndex: true
+        createSearchIndex: true,
+        apiUrl: 'http://localhost:5000'
       }
     })
   })
@@ -310,7 +317,8 @@ test.group('Config Parser', (group) => {
           apiUrl: 'http://localhost:5000',
           createSearchIndex: true,
           detectAssets: true,
-          assetsUrl: 'http://localhost:5000/__assets'
+          assetsUrl: 'http://localhost:5000/__assets',
+          validateDomain: true
         }
       }
     })
@@ -354,7 +362,8 @@ test.group('Config Parser', (group) => {
           apiUrl: 'http://localhost:5000',
           createSearchIndex: true,
           detectAssets: true,
-          assetsUrl: 'http://localhost:5000/__assets'
+          assetsUrl: 'http://localhost:5000/__assets',
+          validateDomain: true
         }
       }
     })
@@ -404,7 +413,8 @@ test.group('Config Parser', (group) => {
           apiUrl: 'http://localhost:5000',
           createSearchIndex: true,
           detectAssets: true,
-          assetsUrl: 'http://localhost:5000/__assets'
+          assetsUrl: 'http://localhost:5000/__assets',
+          validateDomain: true
         }
       }
     })
@@ -433,7 +443,8 @@ test.group('Config Parser', (group) => {
           apiUrl: 'http://localhost:5000',
           createSearchIndex: true,
           detectAssets: true,
-          assetsUrl: 'http://localhost:5000/__assets'
+          assetsUrl: 'http://localhost:5000/__assets',
+          validateDomain: false
         }
       }
     })
@@ -458,7 +469,8 @@ test.group('Config Parser', (group) => {
       apiUrl: 'http://foo.com',
       createSearchIndex: true,
       detectAssets: true,
-      assetsUrl: 'http://foo.com/__assets'
+      assetsUrl: 'http://foo.com/__assets',
+      validateDomain: true
     })
   })
 
@@ -495,7 +507,7 @@ test.group('Config Parser', (group) => {
     assert.equal(config.compilerOptions.apiUrl, 'http://localhost:3000')
   })
 
-  test('define custom apiUrl', async (assert) => {
+  test('define custom compilerOptions', async (assert) => {
     await fs.outputJSON(ctx.get('paths').configFile(), {
       compilerOptions: {
         apiUrl: 'http://localhost:3000'

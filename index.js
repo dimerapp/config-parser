@@ -18,12 +18,12 @@ const _ = require('lodash')
  * @class ConfigParser
  *
  * @param {String} configPath
+ * @param {Object} masterOptions
  */
 class ConfigParser {
-  constructor (ctx, options = {}) {
+  constructor (ctx, masterOptions = {}) {
     this.paths = ctx.get('paths')
-
-    this.options = Object.assign({ validateDomain: true }, options)
+    this.masterOptions = Object.assign({ validateDomain: true }, masterOptions)
 
     this.defaults = {
       domain: '',
@@ -34,7 +34,7 @@ class ConfigParser {
       },
       websiteOptions: {},
       compilerOptions: {
-        apiUrl: this.options.apiUrl,
+        apiUrl: 'http://localhost:5000',
         detectAssets: true,
         createSearchIndex: true
       }
@@ -269,17 +269,7 @@ class ConfigParser {
       apiUrl: 'http://localhost:5000',
       createSearchIndex: true,
       detectAssets: true
-    }, config.compilerOptions)
-
-    /**
-     * We give preference to `apiUrl` from the options.
-     * This way, we allow modifying the apiUrl on fly
-     * without changing the config file again and
-     * again.
-     */
-    if (this.options.apiUrl) {
-      compilerOptions.apiUrl = this.options.apiUrl
-    }
+    }, config.compilerOptions, this.masterOptions)
 
     /**
      * Create the assets url (if missing)
@@ -289,7 +279,7 @@ class ConfigParser {
     /**
      * Validate domain (if required)
      */
-    if (this.options.validateDomain) {
+    if (compilerOptions.validateDomain) {
       this._validateDomain(domain, errors)
     }
 

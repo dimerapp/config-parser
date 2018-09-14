@@ -40,18 +40,30 @@ const Context = require('@dimerapp/context')
 
 const ctx = new Context(__dirname)
 
-// options are optional
-const configParser = new ConfigParser(ctx, options)
+// masterOptions are optional
+const configParser = new ConfigParser(ctx, masterOptions)
 ```
 
-## Options
-You can optionally pass options to the constructor
+## Master Options
+You can optionally pass masterOptions to the constructor. The `masterOptions` are merged (with more priority) the compiler options defined inside the config file.
+
+## Compiler options
+Following options are allowed inside `dimer.json` config file as `compileOptions`.
 
 #### validateDomain (boolean)
 Whether or not to validate the domain. `default=true`
 
-#### apiUrl (string)
+#### apiUrl? (string)
 API url from which the api is served. `default=http://localhost:5000`. Defining this in options, will override the value explicitly defined in config.
+
+#### assetsUrl? (string)
+The assets url from where the assets will be served. If not defined, it will be created from the `apiUrl`.
+
+#### createSearchIndex
+Whether or not to create the search index.
+
+#### detectAssets
+Whether or not to detect assets.
 
 ## API
 
@@ -85,6 +97,26 @@ await configParser.init({
   domain: '',
   versions: {}
 })
+```
+
+## Config file sample
+```js
+{
+  domain: 'adonisjs.dimerapp.com',
+  cname?: 'adonisjs.com',
+  defaultVersion: 'master',
+  versions: {
+    master: 'docs/master'
+  },
+  websiteOptions?: {},
+  compilerOptions: {
+    apiUrl: 'http://localhost:5000',
+    detectAssets: true,
+    createSearchIndex: true,
+    assetsUrl?: 'http://localhost:5000/__assets',
+    validateDomain?: true
+  }
+}
 ```
 
 ## Change log

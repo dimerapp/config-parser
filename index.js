@@ -82,11 +82,9 @@ class ConfigParser {
    */
   _normalizeZones (zones) {
     return _.map(zones, (zone, slug) => {
-      const versions = typeof (zone) === 'string'
-        ? this._normalizeVersions({ master: zone })
-        : this._normalizeVersions(zone.versions, zone.defaultVersion)
-
-      return { versions, name: zone.name || slug, slug }
+      zone = typeof (zone) === 'string' ? { versions: { master: zone } } : zone
+      const versions = this._normalizeVersions(zone.versions, zone.defaultVersion)
+      return { slug: zone.slug || slug, name: zone.name || zone.slug || slug, versions }
     })
   }
 

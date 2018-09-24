@@ -559,7 +559,7 @@ test.group('Config Parser', (group) => {
       domain: 'foo',
       zones: {
         faq: {
-          slug: 'faq',
+          slug: 'zone-faq',
           versions: {
             master: 'faqs/master'
           }
@@ -573,8 +573,8 @@ test.group('Config Parser', (group) => {
     assert.deepEqual(errors, [])
     assert.deepEqual(config.zones, [
       {
-        slug: 'faq',
-        name: 'faq',
+        slug: 'zone-faq',
+        name: 'zone-faq',
         versions: [{
           no: 'master',
           location: 'faqs/master',

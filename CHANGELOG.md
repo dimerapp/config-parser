@@ -1,3 +1,13 @@
+<a name="2.0.4"></a>
+## [2.0.4](https://github.com/dimerapp/config-parser/compare/v2.0.3...v2.0.4) (2018-09-24)
+
+
+### Bug Fixes
+
+* use slug when defined explictly ([587a64f](https://github.com/dimerapp/config-parser/commit/587a64f))
+
+
+
 <a name="2.0.3"></a>
 ## [2.0.3](https://github.com/dimerapp/config-parser/compare/v2.0.2...v2.0.3) (2018-09-14)
 
